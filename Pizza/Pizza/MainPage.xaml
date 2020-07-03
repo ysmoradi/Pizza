@@ -143,6 +143,14 @@
                     WidthRequest="30">
                     <BoxView.GestureRecognizers>
                         <TapGestureRecognizer Tapped="PizzaRulerThumb_Tapped" />
+                        <SwipeGestureRecognizer
+                            Direction="Left"
+                            Swiped="PizzaRulerThumb_Swiped_Left"
+                            Threshold="32" />
+                        <SwipeGestureRecognizer
+                            Direction="Right"
+                            Swiped="PizzaRulerThumb_Swiped_Right"
+                            Threshold="32" />
                     </BoxView.GestureRecognizers>
                 </BoxView>
                 <Label

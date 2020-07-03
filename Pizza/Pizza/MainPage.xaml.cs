@@ -399,5 +399,36 @@ namespace Pizza
         {
             animState.Go(State.Entrance);
         }
+
+        private void PizzaRulerThumb_Swiped_Right(object sender, SwipedEventArgs e)
+        {
+            switch (animState.CurrentState)
+            {
+                case State.Small:
+                    SizeLabel.Text = "Medium";
+                    animState.Go(State.Medium);
+                    break;
+                case State.Medium:
+                    SizeLabel.Text = "Large";
+                    animState.Go(State.Large);
+                    break;
+            }
+        }
+
+        private void PizzaRulerThumb_Swiped_Left(object sender, SwipedEventArgs e)
+        {
+
+            switch (animState.CurrentState)
+            {
+                case State.Medium:
+                    SizeLabel.Text = "Small";
+                    animState.Go(State.Small);
+                    break;
+                case State.Large:
+                    SizeLabel.Text = "Medium";
+                    animState.Go(State.Medium);
+                    break;
+            }
+        }
     }
 }

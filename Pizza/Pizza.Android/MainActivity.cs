@@ -15,6 +15,7 @@ namespace Pizza.Droid
 
             base.OnCreate(savedInstanceState);
 
+            Xamarin.Forms.Forms.SetFlags("SwipeView_Experimental");
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             LoadApplication(new App());
