@@ -92,8 +92,7 @@ namespace Pizza
 
         public async Task GetTransition(bool withAnimation)
         {
-            VisualElement targetElement;
-            if (!_targetElementReference.TryGetTarget(out targetElement))
+            if (!_targetElementReference.TryGetTarget(out VisualElement targetElement))
                 throw new ObjectDisposedException("Target VisualElement was disposed");
 
             if (_delay > 0)

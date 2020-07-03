@@ -1,28 +1,27 @@
 using System;
 using Xamarin.Forms;
-using Pizza.Controls;
-
 
 namespace Pizza.Controls
 {
-    public partial class FerrisLabel : Grid
+    public partial class FerrisLabel
     {
-        public static readonly BindableProperty TextStyleProperty = 
-            BindableProperty.Create(nameof(TextStyle), 
-                typeof(Style), 
-                typeof(FerrisLabel), 
+        public FerrisLabel()
+        {
+            InitializeComponent();
+            Current = CurrentLabel;
+            Next = NextLabel;
+        }
+
+        public static readonly BindableProperty TextStyleProperty =
+            BindableProperty.Create(nameof(TextStyle),
+                typeof(Style),
+                typeof(FerrisLabel),
                 default, propertyChanged: OnTextStyleChanged);
+
         public Style TextStyle
         {
-            get
-            {
-                return (Style)GetValue(TextStyleProperty);
-            }
-
-            set
-            {
-                SetValue(TextStyleProperty, value);
-            }
+            get => (Style)GetValue(TextStyleProperty);
+            set => SetValue(TextStyleProperty, value);
         }
 
         static void OnTextStyleChanged(BindableObject bindable, object oldValue, object newValue)
@@ -49,22 +48,16 @@ namespace Pizza.Controls
 
         public Point AnimationOffset { get; set; }
 
-
         public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(FerrisLabel), default(string), propertyChanged: OnTextChanged);
+
         public string Text
         {
-            get
-            {
-                return (string)GetValue(TextProperty);
-            }
-
-            set
-            {
-                SetValue(TextProperty, value);
-            }
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
 
         public Label Current { get; set; }
+
         public Label Next { get; set; }
 
         static void OnTextChanged(BindableObject bindable, object oldValue, object newValue)
@@ -82,7 +75,6 @@ namespace Pizza.Controls
                 // TODO: Handle exception.
             }
         }
-        double distance = 20;
 
         async void ApplyText(string oldValue, string newValue)
         {
@@ -108,14 +100,6 @@ namespace Pizza.Controls
             // recycle the views
             Current = NextLabel;
             Next = CurrentLabel;
-        }
-
-        public FerrisLabel()
-        {
-            InitializeComponent();
-            Current = CurrentLabel;
-            Next = NextLabel;
-
         }
     }
 }

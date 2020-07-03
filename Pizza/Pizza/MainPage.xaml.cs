@@ -1,18 +1,11 @@
 ﻿using SkiaSharp;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Pizza
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
-    [DesignTimeVisible(false)]
-    public partial class MainPage : ContentPage
+    public partial class MainPage
     {
 
         AnimationStateMachine animState;
@@ -20,7 +13,6 @@ namespace Pizza
         public MainPage()
         {
             InitializeComponent();
-            this.SizeChanged += MainPage_SizeChanged;
         }
 
         bool hasSizeBeenCalculated = false;
@@ -33,12 +25,12 @@ namespace Pizza
             animState.Go(State.Entrance, true);
         }
 
-
         Animation pulse;
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
             if (hasSizeBeenCalculated)
             {
                 // need to resetup animations here. 
@@ -49,11 +41,13 @@ namespace Pizza
             }
 
             // create continuous animation for thumb
-            pulse = new Animation();
-            pulse.Add(0, .5, new Animation(a => PizzaThumbLabel.TranslationX = a, 0, 5, Easing.SinInOut));
-            pulse.Add(.5, 1, new Animation(a => PizzaThumbLabel.TranslationX = a, 5, 0, Easing.SinInOut));
+            pulse = new Animation
+            {
+                { 0, .5, new Animation(a => PizzaThumbLabel.TranslationX = a, 0, 5, Easing.SinInOut) },
+                { .5, 1, new Animation(a => PizzaThumbLabel.TranslationX = a, 5, 0, Easing.SinInOut) }
+            };
             // start the animation continuously
-            pulse.Commit(this, "pulse", length:500, repeat: () => true);
+            pulse.Commit(this, "pulse", length: 500, repeat: () => true);
 
         }
 
@@ -82,7 +76,7 @@ namespace Pizza
             animState = new AnimationStateMachine();
 
             // starting 
-            animState.Add(State.Start, new ViewTransition[]
+            animState.Add(State.Start, new[]
             {
                 new ViewTransition(Pizza, AnimationType.Layout, startRect),
                 new ViewTransition(Pizza, AnimationType.Rotation, 0),
@@ -108,7 +102,7 @@ namespace Pizza
             var entranceRect = startRect;
             entranceRect.Location = new Point(-left, -top + 50);
 
-            animState.Add(State.Entrance, new ViewTransition[]
+            animState.Add(State.Entrance, new[]
             {
                 new ViewTransition(Pizza, AnimationType.Layout, entranceRect),
                 new ViewTransition(Pizza, AnimationType.Rotation, 20),
@@ -141,7 +135,7 @@ namespace Pizza
                 width: Width - (20 /* margin */) - (smallRect.Left + (smallRect.Width / 2)),
                 height: 10);
 
-            animState.Add(State.Small, new ViewTransition[]
+            animState.Add(State.Small, new[]
             {
                 new ViewTransition(Pizza, AnimationType.Layout, smallRect),
                 new ViewTransition(Pizza, AnimationType.Rotation, 45),
@@ -172,7 +166,7 @@ namespace Pizza
             pizzaImageSize = Width * .7;
             var mediumRect = new Rectangle(20, yPos - (pizzaImageSize / 2), pizzaImageSize, pizzaImageSize);
             var mediumLabelRect = new Rectangle(mediumRect.Left, mediumRect.Bottom + 10, pizzaImageSize, SizeLabel.Height);
-            animState.Add(State.Medium, new ViewTransition[]
+            animState.Add(State.Medium, new[]
             {
                 new ViewTransition(Pizza, AnimationType.Layout, mediumRect),
                 new ViewTransition(Pizza, AnimationType.Rotation, 90),
@@ -203,7 +197,7 @@ namespace Pizza
             pizzaImageSize = Width * .9;
             var largeRect = new Rectangle(20, yPos - (pizzaImageSize / 2), pizzaImageSize, pizzaImageSize);
             var largeLabelRect = new Rectangle(largeRect.Left, largeRect.Bottom + 10, pizzaImageSize, SizeLabel.Height);
-            animState.Add(State.Large, new ViewTransition[]
+            animState.Add(State.Large, new[]
             {
                 new ViewTransition(Pizza, AnimationType.Layout, largeRect),
                 new ViewTransition(Pizza, AnimationType.Rotation, 135),
@@ -237,40 +231,12 @@ namespace Pizza
                 y: pizzaSize.Top + (pizzaSize.Height / 2) - 15,
                 width: 30,
                 height: 30);
-                
+
         }
-
-        //private void Pizza_Tapped(object sender, EventArgs e)
-        //{
-        //    switch (animState.CurrentState)
-        //    {
-        //        case State.Start:
-        //            animState.Go(State.Entrance);
-        //            break;
-        //        case State.Entrance:
-        //            SizeLabel.Text = "Small";
-        //            animState.Go(State.Small);
-        //            break;
-        //        case State.Small:
-        //            SizeLabel.Text = "Medium";
-        //            animState.Go(State.Medium);
-        //            break;
-        //        case State.Medium:
-        //            SizeLabel.Text = "Large";
-        //            animState.Go(State.Large);
-        //            break;
-        //        case State.Large:
-        //            animState.Go(State.Start);
-        //            break;
-
-        //    }
-        //}
 
         private void AddToCartButton_Clicked(object sender, EventArgs e)
         {
-            //await PizzaFly();
             animState.Go(State.Small);
-
         }
 
         private async Task PizzaFly()
@@ -312,8 +278,8 @@ namespace Pizza
         private async Task RegurgitatePizza()
         {
             // check if the pizza is already flying
-            if (FlyingPizza.IsVisible) return;
-
+            if (FlyingPizza.IsVisible)
+                return;
 
             var buttonBounds = PlaceOrderButton.Bounds;
 
@@ -349,8 +315,6 @@ namespace Pizza
             FlyingPizza.IsVisible = false;
         }
 
-
-
         int currentQuantity = 1;
 
         private async void DecreaseButton_Clicked(object sender, EventArgs e)
@@ -364,7 +328,6 @@ namespace Pizza
             QuantityLabel.Text = currentQuantity.ToString();
             UpdatePrice(currentQuantity);
             await RegurgitatePizza();
-
         }
 
         private async void IncreaseButton_Clicked(object sender, EventArgs e)
@@ -374,12 +337,11 @@ namespace Pizza
             QuantityLabel.Text = currentQuantity.ToString();
             UpdatePrice(currentQuantity);
             await PizzaFly();
-
         }
 
         private void UpdatePrice(int quantity)
         {
-            OrderTotal.AnimationOffset = new Point(0,20);
+            OrderTotal.AnimationOffset = new Point(0, 20);
             OrderTotal.Text = $"{(13.99 * quantity):C}";
         }
 
@@ -405,13 +367,12 @@ namespace Pizza
             {
                 // every 5th tick is full height
                 float tickHeight = (i % 5) == 0 ? e.Info.Height : (float)(e.Info.Height / 2);
-                
+
                 canvas.DrawLine(
                     new SKPoint(i * distanceBetweenTicks, 0),
                     new SKPoint(i * distanceBetweenTicks, tickHeight),
                     rulerPaint);
             }
-
         }
 
         private void PizzaRulerThumb_Tapped(object sender, EventArgs e)
@@ -432,11 +393,6 @@ namespace Pizza
                     animState.Go(State.Small);
                     break;
             }
-        }
-
-        private void PlaceOrderButton_Clicked(object sender, EventArgs e)
-        {
-
         }
 
         private void BackButton_Tapped(object sender, EventArgs e)

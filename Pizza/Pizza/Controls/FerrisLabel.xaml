@@ -2,9 +2,7 @@
 <Grid
     x:Class="Pizza.Controls.FerrisLabel"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:Pizza.Controls"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Label
         x:Name="CurrentLabel"
         HorizontalOptions="Center"
@@ -14,5 +12,4 @@
         HorizontalOptions="Center"
         Opacity="0"
         VerticalOptions="Center" />
-
 </Grid>

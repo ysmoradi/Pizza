@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
     BackgroundColor="{StaticResource Background}"
+    SizeChanged="MainPage_SizeChanged"
     mc:Ignorable="d">
 
     <ContentPage.Resources>
@@ -83,11 +84,7 @@
     </ContentPage.Resources>
 
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="80" />
-        </Grid.RowDefinitions>
+    <Grid RowDefinitions="*, 80">
 
         <Image
             x:Name="BasilLeaf"
@@ -155,7 +152,6 @@
                     Text="&gt;"
                     TextColor="Black"
                     VerticalOptions="Center" />
-
             </Grid>
 
         </AbsoluteLayout>
@@ -216,12 +212,9 @@
         <Grid
             x:Name="QuantitySelect"
             Margin="20,30"
+            ColumnDefinitions="Auto, *"
             ColumnSpacing="40"
             VerticalOptions="End">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
 
             <Label
                 FontSize="18"
@@ -278,18 +271,14 @@
         <Button
             x:Name="PlaceOrderButton"
             Grid.Row="1"
-            Clicked="PlaceOrderButton_Clicked"
             Style="{StaticResource AccentButton}" />
 
         <Grid
             x:Name="PlaceOrder"
             Grid.Row="1"
+            ColumnDefinitions="Auto, Auto"
             HorizontalOptions="Center"
             VerticalOptions="Fill">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
 
             <Label
                 HorizontalOptions="Center"
@@ -297,6 +286,7 @@
                 Style="{StaticResource ButtonTextStyle}"
                 Text="Place Order"
                 VerticalOptions="Center" />
+
             <controls:FerrisLabel
                 x:Name="OrderTotal"
                 Grid.Column="1"
